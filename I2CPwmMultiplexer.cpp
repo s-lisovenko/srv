@@ -159,9 +159,9 @@ void I2CPwmMultiplexer::setOutputMode(bool totempole) {
 }
 
 uint8_t I2CPwmMultiplexer::getPWM(uint8_t num) {
-    std::byte data{0};
-    std::ignore = _bus->ReadByte((uint8_t) (PCA9685_LED0_ON_L + 4 * num), &data);
-    return std::to_integer<uint8_t>(data);
+    uint16_t data;
+    std::ignore = _bus->ReadWord((uint8_t) (PCA9685_LED0_ON_L + 4 * num), data);
+    return data;
 }
 
 uint8_t I2CPwmMultiplexer::setPWM(uint8_t num, uint16_t on, uint16_t off) {
