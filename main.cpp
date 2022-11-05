@@ -22,36 +22,11 @@ int main()
     uint8_t servonum = 0;
 
     for (int i = 0; i < 10; ++i) {
-        // Drive each servo one at a time using setPWM()
-
-        for (uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; pulselen++) {
-            pwm.setPWM(servonum, 0, pulselen);
+        for (uint8_t pin = 0; pin < 16; pin++) {
+            pwm.setPWM(pin, 4096, 0);// turns pin fully on
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            pwm.setPWM(pin, 0, 4096);// turns pin fully off
         }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        for (uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--) {
-            pwm.setPWM(servonum, 0, pulselen);
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-        // Drive each servo one at a time using writeMicroseconds(), it's not precise due to calculation rounding!
-        // The writeMicroseconds() function is used to mimic the Arduino Servo library writeMicroseconds() behavior.
-        for (uint16_t microsec = USMIN; microsec < USMAX; microsec++) {
-            pwm.writeMicroseconds(servonum, microsec);
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-        for (uint16_t microsec = USMAX; microsec > USMIN; microsec--) {
-            pwm.writeMicroseconds(servonum, microsec);
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-
-        servonum++;
-        if (servonum > 7) servonum = 0;// Testing the first 8 servo channels
     }
 
     return 0;
