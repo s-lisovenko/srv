@@ -1,6 +1,7 @@
 #include "I2CPwmMultiplexer.h"
-#include <thread>
 #include <cstddef>
+#include <iostream>
+#include <thread>
 
 #include "I2cBus.h"
 
@@ -121,6 +122,7 @@ void I2CPwmMultiplexer::setPWMFreq(float freq) {
         freq = 3500; // Datasheet limit is 3052=50MHz/(4*4096)
 
     float prescaleval = static_cast<float>(((_oscillator_freq / (freq * 4096.0)) + 0.5) - 1);
+    std::cout << "prescale: " << prescaleval << "\n";
     if (prescaleval < PCA9685_PRESCALE_MIN)
         prescaleval = PCA9685_PRESCALE_MIN;
     if (prescaleval > PCA9685_PRESCALE_MAX)
@@ -130,6 +132,8 @@ void I2CPwmMultiplexer::setPWMFreq(float freq) {
     std::byte data{0};
     std::ignore = _bus->ReadByte(PCA9685_MODE1, &data);
     auto oldmode = std::to_integer<uint8_t>(data);
+    std::cout << "oldmode: " << oldmode << "\n";
+
     uint8_t newmode = (uint8_t) ((oldmode & ~MODE1_RESTART) | MODE1_SLEEP);            // sleep
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(newmode));     // go to sleep
     std::ignore = _bus->WriteByte(PCA9685_PRESCALE, static_cast<std::byte>(prescale)); // set the prescaler
