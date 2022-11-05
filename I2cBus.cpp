@@ -156,7 +156,6 @@ int32_t I2CBus::ReadByte(uint8_t reg, std::byte* data) {
     auto countTxRx = WriteRead(_buffer, _buffer, kByteSize, kByteSize);
     if (countTxRx.first != -1 && countTxRx.second != -1 && countTxRx.second == kByteSize) {
         *data = _buffer[0];
-        std::cout << "_buffer[0]: " << (int)_buffer[0] << "\n";
         ret = countTxRx.second;
     }
 
