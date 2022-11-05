@@ -18,6 +18,14 @@ int main()
         usleep(1'000'000);
         pwm.setPwm(0, 0, 460);
         usleep(1'000'000);
+        pwm.setPwm(0, 0, 505);
+        usleep(1'000'000);
+        pwm.setPwm(0, 0, 550);
+        usleep(1'000'000);
+        pwm.setPwm(0, 0, 505);
+        usleep(1'000'000);
+        pwm.setPwm(0, 0, 460);
+        usleep(1'000'000);
         pwm.setPwm(0, 0, 415);
         usleep(1'000'000);
     }
