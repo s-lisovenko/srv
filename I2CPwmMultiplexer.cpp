@@ -72,7 +72,7 @@ void I2CPwmMultiplexer::begin(uint8_t prescale) {
 
 void I2CPwmMultiplexer::reset() {
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(MODE1_RESTART));
-    //    delay(10);// arduino delay
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void I2CPwmMultiplexer::sleep() {
@@ -81,7 +81,7 @@ void I2CPwmMultiplexer::sleep() {
     auto awake = std::to_integer<uint8_t>(data);
     uint8_t sleep = awake | MODE1_SLEEP; // set sleep bit high
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(sleep));
-    //    delay(5); // wait until cycle ends for sleep to be active
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
 }
 
 void I2CPwmMultiplexer::wakeup() {
@@ -107,7 +107,7 @@ void I2CPwmMultiplexer::setExtClk(uint8_t prescale) {
 
     std::ignore = _bus->WriteByte(PCA9685_PRESCALE, static_cast<std::byte>(prescale)); // set the prescaler
 
-    //    delay(5);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
     // clear the SLEEP bit to start
     std::ignore = _bus->WriteByte(PCA9685_MODE1,
                                   static_cast<std::byte>((newmode & ~MODE1_SLEEP) | MODE1_RESTART | MODE1_AI));
@@ -134,7 +134,7 @@ void I2CPwmMultiplexer::setPWMFreq(float freq) {
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(newmode));     // go to sleep
     std::ignore = _bus->WriteByte(PCA9685_PRESCALE, static_cast<std::byte>(prescale)); // set the prescaler
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(oldmode));
-    //    delay(5);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
     // This sets the MODE1 register to turn on auto increment.
     std::ignore = _bus->WriteByte(PCA9685_MODE1, static_cast<std::byte>(oldmode | MODE1_RESTART | MODE1_AI));
 }
