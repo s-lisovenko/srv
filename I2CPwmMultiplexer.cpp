@@ -130,8 +130,9 @@ void I2CPwmMultiplexer::setPWMFreq(float freq) {
     uint8_t prescale = (uint8_t) prescaleval;
 
     std::byte data{0};
-    std::ignore = _bus->ReadByte(PCA9685_MODE1, &data);
+    auto countRead = _bus->ReadByte(PCA9685_MODE1, &data);
     auto oldmode = std::to_integer<uint8_t>(data);
+    std::cout << "countRead: " << countRead << "\n";
     std::cout << "oldmode: " << oldmode << "\n";
 
     uint8_t newmode = (uint8_t) ((oldmode & ~MODE1_RESTART) | MODE1_SLEEP);            // sleep
