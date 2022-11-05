@@ -1,5 +1,6 @@
 #include "I2CPwmMultiplexer.h"
 #include <iostream>
+#include <thread>
 
 #define SERVOMIN 150 // This is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX 600 // This is the 'maximum' pulse length count (out of 4096)
@@ -22,6 +23,7 @@ int main()
     for (uint16_t i = 0; i < 10; i++) {
         pwm.setPWM(0, 0, lock ? 1000 : 2000);
         lock = !lock;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
 
