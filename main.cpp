@@ -2,32 +2,30 @@
 #include <iostream>
 #include <unistd.h>
 
-int main()
+int main(int argc, char** argv)
 {
+    if (argc < 3) {
+        std::cout << "Please pass 2 parameters. Programm <servo_channel> <servo_frequency>";
+        return 1;
+    }
+
+    int channel = atoi(argv[1]);
+    int freq = atoi(argv[2]);
+
     auto &pwm = I2CPwmMultiplexer::instance();
     if (!pwm.isInit()) {
         std::cerr << "I2C not inited!\n";
         return 1;
     }
-    pwm.setPwmFreq(60);
+    pwm.setPwmFreq(freq);
 
-    while (true) {
-        pwm.setPwm(0, 0, 370);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 415);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 460);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 505);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 550);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 505);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 460);
-        usleep(1'000'000);
-        pwm.setPwm(0, 0, 415);
-        usleep(1'000'000);
+    int pwmUsec;
+    while (std::cin >> pwmUsec) {
+        pwm.setPwmMs(channel, pwmUsec);
+
+        if (pwmUsec < 0) {
+            return 0;
+        }
     }
     return 0;
 }
