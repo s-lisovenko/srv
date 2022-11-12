@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstddef>
 #include <unistd.h>
+#include <iostream>
 
 #include "I2cBus.h"
 
@@ -81,6 +82,7 @@ void I2CPwmMultiplexer::setPwmFreq(const double freqHz)
 
 void I2CPwmMultiplexer::setPwm(const int channel, const uint16_t on, const uint16_t off)
 {
+    std::cout << "Pwm: " << off << "\n";
     const auto channel_offset = 4 * channel;
     std::ignore = _bus->WriteByte(LED0_ON_L + channel_offset, static_cast<std::byte>(on & 0xFF));
     std::ignore = _bus->WriteByte(LED0_ON_H + channel_offset, static_cast<std::byte>(on >> 8));

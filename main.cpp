@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 
     int pwmUsec;
     while (std::cin >> pwmUsec) {
-        pwm.setPwmMs(channel, pwmUsec);
+        pwm.setPwmMs(channel, (double)pwmUsec / 1000);
 
         if (pwmUsec < 0) {
             return 0;
